@@ -17,26 +17,6 @@ services:
         value: admin
       - key: ADMIN_PASSWORD
         sync: false
-      - key: PGHOST
-        fromDatabase:
-          name: finance-dashboard-db
-          property: host
-      - key: PGPORT
-        fromDatabase:
-          name: finance-dashboard-db
-          property: port
-      - key: PGUSER
-        fromDatabase:
-          name: finance-dashboard-db
-          property: user
-      - key: PGPASSWORD
-        fromDatabase:
-          name: finance-dashboard-db
-          property: password
-      - key: PGDATABASE
-        fromDatabase:
-          name: finance-dashboard-db
-          property: database
 
 databases:
   - name: finance-dashboard-db
