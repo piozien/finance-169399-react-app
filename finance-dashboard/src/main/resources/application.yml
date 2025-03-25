@@ -1,14 +1,14 @@
 server:
-  port: 8080
+  port: ${PORT}
   error:
     include-message: always
     include-binding-errors: always
 
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/finance
-    username: postgres
-    password: 123
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
   jpa:
     hibernate:
       ddl-auto: update
@@ -31,12 +31,12 @@ spring:
     encoding: UTF-8
   security:
     user:
-      name: admin
-      password: admin
+      name: ${SPRING_SECURITY_USER_NAME}
+      password: ${SPRING_SECURITY_USER_PASSWORD}
 
 app:
   cors:
-    allowed-origins: http://localhost:5173
+    allowed-origins: ${CORS_ALLOWED_ORIGINS}
 
 logging:
   level:
