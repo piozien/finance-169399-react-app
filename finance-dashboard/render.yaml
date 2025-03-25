@@ -17,10 +17,18 @@ services:
         value: admin
       - key: ADMIN_PASSWORD
         sync: false
-      - key: SPRING_DATASOURCE_URL
+      - key: JDBC_DATABASE_URL
         fromDatabase:
           name: finance-dashboard-db
           property: connectionString
+      - key: JDBC_DATABASE_USERNAME
+        fromDatabase:
+          name: finance-dashboard-db
+          property: user
+      - key: JDBC_DATABASE_PASSWORD
+        fromDatabase:
+          name: finance-dashboard-db
+          property: password
 
 databases:
   - name: finance-dashboard-db
