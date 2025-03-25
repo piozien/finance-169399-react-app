@@ -1,0 +1,197 @@
+.expense-manager {
+    background-color: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.expense-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    margin-bottom: 20px;
+}
+
+.expand-icon {
+    transition: transform 0.3s ease;
+}
+
+.expand-icon.expanded {
+    transform: rotate(180deg);
+}
+
+.add-expense-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.form-group {
+    display: flex;
+    gap: 10px;
+}
+
+.form-group input,
+.form-group select {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.form-group input[type="number"] {
+    width: 120px;
+}
+
+.form-group input[type="text"] {
+    flex: 1;
+}
+
+.form-group select {
+    min-width: 150px;
+}
+
+.form-group button {
+    padding: 8px 16px;
+    background: #3182CEFF;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.form-group button:hover {
+ background: #165e9d;
+}
+
+.form-group button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+.error-message {
+    background-color: #ffebee;
+    color: #c62828;
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+}
+
+.expenses-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.expense-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px;
+    background-color: #f8f9fa;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+}
+
+.expense-item:hover {
+    background-color: #f1f3f5;
+}
+
+.expense-info {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.expense-amount {
+    font-weight: bold;
+    color: #0e3b67;
+}
+
+.expense-category {
+    color: #666;
+    background-color: #e9ecef;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 0.9em;
+}
+
+.expense-description {
+    color: #666;
+    font-style: italic;
+}
+
+.expense-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.edit-button,
+.delete-button {
+    padding: 6px 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    font-size: 16px;
+}
+
+.edit-button, .save-button {
+    background-color: #41af1c;
+    color: #ffffff;
+}
+
+.delete-button, .cancel-button {
+    background-color: #e13232;
+    color: #ffffff;
+}
+
+.edit-button:hover, .save-button:hover {
+    background-color: #389b18;
+}
+
+.delete-button:hover, .cancel-button:hover {
+    background-color: #c72727;
+}
+
+.edit-button:disabled,
+.delete-button:disabled {
+    background-color: #f8f9fa;
+    color: #adb5bd;
+    cursor: not-allowed;
+}
+
+.edit-expense-form {
+    width: 100%;
+}
+
+.edit-form-group {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.edit-form-group:last-child {
+    margin-bottom: 0;
+}
+
+.edit-buttons {
+    display: flex;
+    gap: 8px;
+}
+
+.edit-buttons button {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.edit-buttons button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
