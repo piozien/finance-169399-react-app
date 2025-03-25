@@ -10,3 +10,7 @@ target/
 .settings/
 .project
 .classpath
+README.md
+.mvn/
+mvnw
+mvnw.cmd

@@ -2,6 +2,12 @@ services:
   - type: web
     name: finance-dashboard
     env: docker
+    region: frankfurt
+    plan: free
+    branch: backend
+    healthCheckPath: /actuator/health
+    dockerfilePath: finance-dashboard/Dockerfile
+    rootDirectory: finance-dashboard
     buildCommand: ./mvnw clean package -DskipTests
     startCommand: java -jar target/*.jar
     envVars:
@@ -11,12 +17,9 @@ services:
         value: admin
       - key: ADMIN_PASSWORD
         sync: false
-      - key: SPRING_DATASOURCE_URL
-        fromDatabase:
-          name: finance-dashboard-db
-          property: connectionString
 
 databases:
   - name: finance-dashboard-db
-    databaseName: finance
+    databaseName: finance_pfi0
     plan: free
+    region: frankfurt
