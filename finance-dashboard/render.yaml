@@ -20,6 +20,6 @@ services:
 
 databases:
   - name: finance-dashboard-db
-    databaseName: finance
+    databaseName: finance_pfi0
     plan: free
     region: frankfurt

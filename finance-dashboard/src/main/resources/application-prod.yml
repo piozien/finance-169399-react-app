@@ -5,9 +5,9 @@ server:
 
 spring:
   datasource:
-    url: jdbc:postgresql://dpg-cvhe2jqqgecs73cqoqj0-a:5432/finance_pfi0
-    username: finance_pfi0_user
-    password: aWfnJ7f1l8K16TRuEhK3JSVrpnclMjWx
+    url: ${DATABASE_URL}
+    username: ${DATABASE_USERNAME}
+    password: ${DATABASE_PASSWORD}
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
