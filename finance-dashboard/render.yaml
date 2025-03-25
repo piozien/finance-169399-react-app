@@ -2,6 +2,12 @@ services:
   - type: web
     name: finance-dashboard
     env: docker
+    region: frankfurt
+    plan: free
+    branch: backend
+    healthCheckPath: /actuator/health
+    dockerfilePath: finance-dashboard/Dockerfile
+    rootDirectory: finance-dashboard
     buildCommand: ./mvnw clean package -DskipTests
     startCommand: java -jar target/*.jar
     envVars:
@@ -20,3 +26,4 @@ databases:
   - name: finance-dashboard-db
     databaseName: finance
     plan: free
+    region: frankfurt

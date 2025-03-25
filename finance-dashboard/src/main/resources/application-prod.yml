@@ -23,7 +23,7 @@ spring:
 
 app:
   cors:
-    allowed-origins: ${FRONTEND_URL:*}
+    allowed-origins: https://finance-169399.netlify.app
 
 logging:
   level:
