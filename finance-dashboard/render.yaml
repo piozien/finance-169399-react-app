@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: finance-dashboard
+    env: docker
+    buildCommand: ./mvnw clean package -DskipTests
+    startCommand: java -jar target/*.jar
+    envVars:
+      - key: SPRING_PROFILES_ACTIVE
+        value: prod
+      - key: ADMIN_USERNAME
+        value: admin
+      - key: ADMIN_PASSWORD
+        sync: false
+      - key: SPRING_DATASOURCE_URL
+        fromDatabase:
+          name: finance-dashboard-db
+          property: connectionString
+
+databases:
+  - name: finance-dashboard-db
+    databaseName: finance
+    plan: free
