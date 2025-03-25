@@ -1,0 +1,56 @@
+server:
+  port: 8080
+  error:
+    include-message: always
+    include-binding-errors: always
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/finance
+    username: postgres
+    password: 123
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+        generate_statistics: true
+        order_updates: true
+        jdbc:
+          batch_size: 25
+        session:
+          events:
+            log:
+              LOG_QUERIES_SLOWER_THAN_MS: 1
+    open-in-view: false
+  messages:
+    basename: messages
+    encoding: UTF-8
+  security:
+    user:
+      name: admin
+      password: admin
+
+app:
+  cors:
+    allowed-origins: http://localhost:5173
+
+logging:
+  level:
+    org:
+      springframework:
+        security: INFO
+        orm.jpa: DEBUG
+        transaction: DEBUG
+      hibernate:
+        SQL: DEBUG
+        type:
+          descriptor:
+            sql:
+              BasicBinder: TRACE
+        engine: DEBUG
+    graduate:
+      finance_dashboard: DEBUG
