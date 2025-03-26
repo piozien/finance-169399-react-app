@@ -1,7 +1,6 @@
 import axios from 'axios';
 
 const API_URL = import.meta.env.VITE_API_URL || 'https://finance-169399.herokuapp.com/api';
-console.log("API request to:", `${API_URL}/auth/register`);
 
 const axiosInstance = axios.create({
     baseURL: API_URL,
