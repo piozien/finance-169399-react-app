@@ -4,7 +4,7 @@ import { login, checkServerHealth } from '../../api/axios';
 import './Auth.css';
 
 const Login = ({ onClose, onRegisterClick }) => {
- const navigate = useNavigate();
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: "",
     password: ""
@@ -58,16 +58,13 @@ const Login = ({ onClose, onRegisterClick }) => {
       console.log('Login response:', response);
 
       localStorage.setItem('userEmail', formData.email);
-      console.log('Stored email in localStorage:', formData.email);
-
+      window.dispatchEvent(new Event('storage'));
       setStatus({
         type: "success",
-        message: `Hello ${response.data.firstName}! Login successful. You will be redirected shortly.`
+        message: `Hello ${response.data.firstName}! Login successful.`
       });
-
-      setTimeout(() => {
-        navigate('/dashboard');
-      }, 2000); 
+      
+      navigate('/dashboard');
 
     } catch (err) {
       console.error('Login error details:', {
@@ -99,7 +96,7 @@ const Login = ({ onClose, onRegisterClick }) => {
       } else {
         setStatus({
           type: "error",
-          message: err.response?.data?.message || "An unexpected error occurred. Please try again later or contact the administrator."
+          message: "An unexpected error occurred. Please try again later."
         });
       }
     } finally {

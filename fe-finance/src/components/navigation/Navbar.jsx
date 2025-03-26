@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
-import { FaUserCircle, FaChartPie, FaHome, FaMoneyBillWave } from 'react-icons/fa';
+import { FaSignOutAlt, FaChartPie, FaHome, FaMoneyBillWave } from 'react-icons/fa';
+
 import './Navbar.css';
 
 function Navbar({ onLogout, isLoggingOut }) {
@@ -18,11 +19,11 @@ function Navbar({ onLogout, isLoggingOut }) {
                 </Link>
                 <Link to="/category-chart" className="nav-link">
                     <FaChartPie className="nav-icon" />
-                    <span>Categories</span>
+                    <span>Category chart</span>
                 </Link>
                 <Link to="/expenses-chart" className="nav-link">
                     <FaChartPie className="nav-icon" />
-                    <span>Expenses</span>
+                    <span>Expenses chart</span>
                 </Link>
             </div>
             <button 
@@ -30,7 +31,7 @@ function Navbar({ onLogout, isLoggingOut }) {
                 onClick={onLogout}
                 disabled={isLoggingOut}
             >
-                <FaUserCircle className="user-icon" />
+                <FaSignOutAlt className="user-icon" />
                 <span>{isLoggingOut ? 'Logout...' : 'Logout'}</span>
             </button>
         </nav>

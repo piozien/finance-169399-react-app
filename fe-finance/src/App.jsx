@@ -11,14 +11,24 @@ function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
-    const userEmail = localStorage.getItem('userEmail');
-    setIsAuthenticated(!!userEmail);
+    const checkAuth = () => {
+      const userEmail = localStorage.getItem('userEmail');
+      setIsAuthenticated(!!userEmail);
+    };
+
+    checkAuth();
+
+    window.addEventListener('storage', checkAuth);
+
+    return () => {
+      window.removeEventListener('storage', checkAuth);
+    };
   }, []);
 
   return (
     <Router>
       <div className="app-container">
-        {<Routes>
+        <Routes>
           <Route
             path="/"
             element={isAuthenticated ? <Navigate to="/dashboard" /> : <Home />}
@@ -35,10 +45,11 @@ function App() {
             path="/expenses-chart"
             element={isAuthenticated ? <ExpensesChart /> : <Navigate to="/" />}
           />
-        </Routes>}
+        </Routes>
         <Footer />
       </div>
     </Router>
   );
 }
+
 export default App;

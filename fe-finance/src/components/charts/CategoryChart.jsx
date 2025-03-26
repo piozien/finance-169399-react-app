@@ -81,20 +81,6 @@ function CategoryChart() {
         }).format(value);
     };
 
-    // Custom tooltip for the chart
-    const CustomTooltip = ({ active, payload }) => {
-        if (active && payload && payload.length) {
-            const data = payload[0];
-            return (
-                <div className="custom-tooltip">
-                    <p className="tooltip-name">{data.name}</p>
-                    <p className="tooltip-value">{formatValue(data.value)}</p>
-                </div>
-            );
-        }
-        return null;
-    };
-
     return (
         <div className="chart-page">
             <Navbar onLogout={handleLogout} isLoggingOut={isLoggingOut} />
