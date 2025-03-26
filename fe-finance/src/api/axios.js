@@ -161,13 +161,19 @@ export const updateExpense = async (expenseId, expenseData) => {
 };
 
 export const deleteExpense = async (expenseId) => {
-    console.log('Expense removal:', expenseId);
+    console.log('Sending DELETE request for expense:', expenseId);
     try {
         const response = await axiosInstance.delete(`/expenses/${expenseId}`);
-        console.log('Expense removed successfully');
+        console.log('DELETE request response:', response);
         return response;
     } catch (error) {
-        console.error('Error while deleting the expense:', error);
+        console.error('DELETE request error:', {
+            error,
+            response: error.response,
+            data: error.response?.data,
+            status: error.response?.status,
+            url: `/expenses/${expenseId}`
+        });
         throw error;
     }
 };

@@ -179,17 +179,29 @@ function ExpensesManager() {
     const handleDeleteExpense = async (expenseId) => {
         if (!checkUserEmail()) return;
 
+        console.log('Starting expense deletion for ID:', expenseId);
         setDeletingExpenseId(expenseId);
         setIsLoading(true);
 
         try {
-            await deleteExpense(expenseId);
-            setExpenses(prevExpenses =>
-                prevExpenses.filter(exp => exp.id !== expenseId)
-            );
+            console.log('Calling deleteExpense API for ID:', expenseId);
+            const response = await deleteExpense(expenseId);
+            console.log('Delete API response:', response);
+            
+            console.log('Updating local state to remove expense:', expenseId);
+            setExpenses(prevExpenses => {
+                const updatedExpenses = prevExpenses.filter(exp => exp.id !== expenseId);
+                console.log('Updated expenses list:', updatedExpenses);
+                return updatedExpenses;
+            });
             setError('');
         } catch (error) {
-            console.error('Error deleting expense:', error);
+            console.error('Error details:', {
+                error,
+                response: error.response,
+                data: error.response?.data,
+                status: error.response?.status
+            });
             const errorMessage = error.response?.data?.message || error.message;
             setError('Failed to delete expense: ' + errorMessage);
         } finally {
