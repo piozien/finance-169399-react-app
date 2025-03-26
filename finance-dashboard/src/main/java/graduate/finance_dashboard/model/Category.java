@@ -27,8 +27,7 @@ public class Category {
 
     @OneToMany(
             mappedBy = "category",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true,
+            cascade = {CascadeType.PERSIST, CascadeType.MERGE},
             fetch = FetchType.EAGER
     )
     @Builder.Default
@@ -50,6 +49,4 @@ public class Category {
     public List<Expense> getExpenses() {
         return expenses != null ? expenses : new ArrayList<>();
     }
-
-
 }
