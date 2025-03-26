@@ -80,11 +80,22 @@ function ExpensesChart() {
                 }
 
                 // Prepare chart data - each expense separately
-                const chartData = response.data.map(expense => ({
-                    name: expense.description || 'No description',
-                    value: parseFloat(expense.amount),
-                    date: new Date(expense.date).toLocaleDateString('en-US')
-                }));
+                const chartData = response.data.map(expense => {
+                    const amount = parseFloat(expense.amount);
+                    return {
+                        name: expense.description || 'No description',
+                        value: amount,
+                        date: new Date(expense.date).toLocaleDateString('pl-PL')
+                    };
+                });
+
+                // Calculate total amount for percentage
+                const totalAmount = chartData.reduce((sum, item) => sum + item.value, 0);
+                
+                // Add percentage to each item
+                chartData.forEach(item => {
+                    item.percentage = ((item.value / totalAmount) * 100).toFixed(1);
+                });
 
                 setExpenses(chartData);
             } catch (error) {
@@ -186,6 +197,7 @@ function ExpensesChart() {
                                                 <div className="custom-tooltip">
                                                     <p className="tooltip-name">{data.name}</p>
                                                     <p className="tooltip-value">{formatValue(data.value)}</p>
+                                                    <p className="tooltip-percentage">{data.payload.percentage}% of category</p>
                                                     <p className="tooltip-date">{data.payload.date}</p>
                                                 </div>
                                             );

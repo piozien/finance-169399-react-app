@@ -199,7 +199,14 @@ function ExpensesManager() {
     };
 
     const formatAmount = (amount) => {
-        return parseFloat(amount).toFixed(2);
+        return new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'USD'
+        }).format(amount);
+    };
+
+    const formatDate = (dateString) => {
+        return new Date(dateString).toLocaleString('pl-PL');
     };
 
     const toggleExpanded = () => {
@@ -301,13 +308,18 @@ function ExpensesManager() {
                                 ) : (
                                     <>
                                         <div className="expense-info">
-                                            <span className="expense-amount">{formatAmount(expense.amount)} USD</span>
-                                            <span className="expense-category">
-                                                {categories.find(cat => cat.id === expense.categoryId)?.name || 'No category'}
-                                            </span>
-                                            {expense.description && (
-                                                <span className="expense-description">{expense.description}</span>
-                                            )}
+                                            <div className="expense-amount">{formatAmount(expense.amount)}</div>
+                                            <div className="expense-details">
+                                                <div className="expense-description">
+                                                    {expense.description || 'No description'}
+                                                </div>
+                                                <div className="expense-category">
+                                                    {categories.find(c => c.id === expense.categoryId)?.name || 'Unknown category'}
+                                                </div>
+                                                <div className="expense-date">
+                                                    Created: {formatDate(expense.date)}
+                                                </div>
+                                            </div>
                                         </div>
                                         <div className="expense-actions">
                                             <button
