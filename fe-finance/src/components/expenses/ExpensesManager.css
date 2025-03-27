@@ -72,14 +72,6 @@
     cursor: not-allowed;
 }
 
-.error-message {
-    background-color: #ffebee;
-    color: #c62828;
-    padding: 10px;
-    border-radius: 4px;
-    margin-bottom: 20px;
-}
-
 .expenses-list {
     display: flex;
     flex-direction: column;

@@ -17,6 +17,7 @@ function CategoryManager() {
   const [editingCategory, setEditingCategory] = useState(null);
   const [editName, setEditName] = useState('');
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [deletingCategoryId, setDeletingCategoryId] = useState(null);
   const [isExpanded, setIsExpanded] = useState(true);
@@ -40,6 +41,20 @@ function CategoryManager() {
     
     const timeout = setTimeout(() => {
       setError('');
+    }, duration);
+    
+    setErrorTimeout(timeout);
+  };
+
+  const setSuccessWithTimeout = (message, duration = 5000) => {
+    if (errorTimeout) {
+      clearTimeout(errorTimeout);
+    }
+    
+    setSuccess(message);
+    
+    const timeout = setTimeout(() => {
+      setSuccess('');
     }, duration);
     
     setErrorTimeout(timeout);
@@ -87,7 +102,7 @@ function CategoryManager() {
       const response = await createCategory({ name: newCategoryName.trim() });
       setNewCategoryName('');
       setCategories(prevCategories => [...prevCategories, response.data]);
-      setErrorWithTimeout('Category has been successfully added', 3000);
+      setSuccessWithTimeout('Category has been successfully added', 3000);
       notifyCategoryChange('create', response.data.id);
     } catch (error) {
       console.error('Error details during addition:', error);
@@ -130,7 +145,7 @@ function CategoryManager() {
       );
       setEditingCategory(null);
       setEditName('');
-      setErrorWithTimeout('Category has been successfully updated', 3000);
+      setSuccessWithTimeout('Category has been successfully updated', 3000);
       notifyCategoryChange('update', categoryId);
     } catch (error) {
       console.error('Error during update:', error);
@@ -152,7 +167,7 @@ function CategoryManager() {
       setCategories(prevCategories =>
         prevCategories.filter(cat => cat.id !== categoryId)
       );
-      setErrorWithTimeout('Category has been successfully deleted', 3000);
+      setSuccessWithTimeout('Category has been successfully deleted', 3000);
       notifyCategoryChange('delete', categoryId);
     } catch (error) {
       console.error('Error during deletion:', error);
@@ -170,7 +185,8 @@ function CategoryManager() {
 
   return (
     <div className="category-manager">
-      {error && <div className="error-message-fixed">{error}</div>}
+      {error && <div className="message message-error">{error}</div>}
+      {success && <div className="message message-success">{success}</div>}
       
       <div className="category-header" onClick={toggleExpanded}>
         <h2>Category Management</h2>
