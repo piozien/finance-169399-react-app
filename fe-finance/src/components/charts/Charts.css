@@ -30,14 +30,6 @@
     padding: 20px;
 }
 
-.chart-container .error {
-    color: #c62828;
-    background-color: #ffebee;
-    padding: 10px;
-    border-radius: 4px;
-    text-align: center;
-}
-
 .custom-tooltip {
     background-color: rgba(255, 255, 255, 0.95);
     border: 1px solid #ccc;

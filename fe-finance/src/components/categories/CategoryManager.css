@@ -77,44 +77,6 @@
   cursor: not-allowed;
 }
 
-.error-message {
-  padding: 0.75rem;
-  margin: 1rem 0;
-  background-color: #ffebee;
-  color: #c62828;
-  border-radius: 4px;
-  border-left: 4px solid #c62828;
-}
-
-.error-message-fixed {
-  position: fixed;
-  top: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 1000;
-  padding: 1rem;
-  background-color: #ffebee;
-  color: #c62828;
-  border-radius: 4px;
-  border-left: 4px solid #c62828;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-  max-width: 90%;
-  width: auto;
-  text-align: center;
-  animation: slideIn 0.3s ease-out;
-}
-
-@keyframes slideIn {
-  from {
-    transform: translate(-50%, -100%);
-    opacity: 0;
-  }
-  to {
-    transform: translate(-50%, 0);
-    opacity: 1;
-  }
-}
-
 .categories-list {
   margin-top: 1rem;
 }

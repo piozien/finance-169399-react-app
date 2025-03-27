@@ -19,6 +19,7 @@ function ExpensesManager() {
         categoryId: ''
     });
     const [error, setError] = useState('');
+    const [success, setSuccess] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [deletingExpenseId, setDeletingExpenseId] = useState(null);
     const [isExpanded, setIsExpanded] = useState(true);
@@ -104,6 +105,7 @@ function ExpensesManager() {
             const response = await createExpense(newExpense);
             setNewExpense({ amount: '', description: '', categoryId: '' });
             setExpenses(prevExpenses => [...prevExpenses, response.data]);
+            setSuccess('Expense added successfully');
             setError('');
         } catch (error) {
             console.error('Error adding expense:', error);
@@ -166,6 +168,7 @@ function ExpensesManager() {
                 description: '',
                 categoryId: ''
             });
+            setSuccess('Expense updated successfully');
             setError('');
         } catch (error) {
             console.error('Error updating expense:', error);
@@ -271,7 +274,8 @@ function ExpensesManager() {
                         </div>
                     </form>
 
-                    {error && <div className="error-message">{error}</div>}
+                    {error && <div className="message message-error">{error}</div>}
+                    {success && <div className="message message-success">{success}</div>}
 
                     <div className="expenses-list">
                         {expenses.map(expense => (

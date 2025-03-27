@@ -88,7 +88,7 @@ function CategoryChart() {
                 {isLoading ? (
                     <div>Loading data...</div>
                 ) : error ? (
-                    <div className="error">{error}</div>
+                    <div className="message message-error">{error}</div>
                 ) : categories.length === 0 ? (
                     <div className="no-data">
                         <h2>No expenses in categories</h2>

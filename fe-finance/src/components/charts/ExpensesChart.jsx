@@ -149,10 +149,9 @@ function ExpensesChart() {
                     </div>
                 </div>
 
+                {error && <div className="message message-error">{error}</div>}
                 {isLoading ? (
                     <div>Loading data...</div>
-                ) : error ? (
-                    <div className="error">{error}</div>
                 ) : !selectedCategory ? (
                     <div className="no-data">
                         <h2>Select category</h2>
