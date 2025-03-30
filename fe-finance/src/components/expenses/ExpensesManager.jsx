@@ -221,7 +221,7 @@ function ExpensesManager() {
     };
 
     const formatDate = (dateString) => {
-        return new Date(dateString).toLocaleString('pl-PL');
+        return new Date(dateString).toLocaleString('en-US');
     };
 
     const toggleExpanded = () => {
