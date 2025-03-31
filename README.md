@@ -43,7 +43,6 @@ Create a `.env` file in the root directory with the following variables:
 - `/src` - Source code
 - `/public` - Static assets
 - `/src/components` - React components
-- `/src/pages` - Page components
 - `/src/api` - API integration
 
 ## Related Projects
