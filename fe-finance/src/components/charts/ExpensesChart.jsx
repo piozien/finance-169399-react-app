@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { getCategories, getExpensesByCategory, getExpensesByDateRange } from '../../api/axios';
 import Navbar from '../navigation/Navbar';
 import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from 'recharts';
-import { formatDateShortUS } from '../../utils/dateUtils';
+import { formatDateShortUS, formatDateForInput, parseInputDate } from '../../utils/dateUtils';
 import './Charts.css';
 
 function ExpensesChart() {
@@ -138,19 +138,19 @@ function ExpensesChart() {
                     <div className="control-group">
                         <label htmlFor="startDate">From:</label>
                         <input
-                            type="datetime-local"
+                            type="date"
                             id="startDate"
-                            value={startDate}
-                            onChange={(e) => setStartDate(e.target.value)}
+                            value={startDate ? startDate.split('T')[0] : ''}
+                            onChange={(e) => setStartDate(e.target.value ? e.target.value + 'T00:00:00' : '')}
                         />
                     </div>
                     <div className="control-group">
                         <label htmlFor="endDate">To:</label>
                         <input
-                            type="datetime-local"
+                            type="date"
                             id="endDate"
-                            value={endDate}
-                            onChange={(e) => setEndDate(e.target.value)}
+                            value={endDate ? endDate.split('T')[0] : ''}
+                            onChange={(e) => setEndDate(e.target.value ? e.target.value + 'T23:59:59' : '')}
                         />
                     </div>
                 </div>

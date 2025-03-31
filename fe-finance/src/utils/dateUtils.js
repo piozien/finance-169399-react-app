@@ -19,3 +19,15 @@ export const formatDateShortUS = (dateString) => {
         year: 'numeric'
     });
 };
+
+export const formatDateForInput = (dateString) => {
+    if (!dateString) return '';
+    const date = new Date(dateString);
+    return date.toISOString().slice(0, 16);
+};
+
+export const parseInputDate = (inputValue) => {
+    if (!inputValue) return '';
+    const date = new Date(inputValue);
+    return date.toISOString();
+};
