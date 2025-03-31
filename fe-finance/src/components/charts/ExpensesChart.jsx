@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { getCategories, getExpensesByCategory, getExpensesByDateRange } from '../../api/axios';
 import Navbar from '../navigation/Navbar';
 import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from 'recharts';
+import { formatDateShortUS } from '../../utils/dateUtils';
 import './Charts.css';
 
 function ExpensesChart() {
@@ -80,12 +81,17 @@ function ExpensesChart() {
                 }
 
                 // Prepare chart data - each expense separately
-                const chartData = response.data.map(expense => {
+                const formattedExpenses = response.data.map(expense => ({
+                    ...expense,
+                    date: formatDateShortUS(expense.date)
+                }));
+
+                const chartData = formattedExpenses.map(expense => {
                     const amount = parseFloat(expense.amount);
                     return {
                         name: expense.description || 'No description',
                         value: amount,
-                        date: new Date(expense.date).toLocaleDateString('pl-PL')
+                        date: expense.date
                     };
                 });
 
