@@ -1,9 +1,9 @@
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { getCategories, getExpensesByCategory, getExpensesByDateRange } from '../../api/axios';
+import {useState, useEffect} from 'react';
+import {useNavigate} from 'react-router-dom';
+import {getCategories, getExpensesByCategory, getExpensesByDateRange} from '../../api/axios';
 import Navbar from '../navigation/Navbar';
-import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from 'recharts';
-import { formatDateShortUS, formatDateForInput, parseInputDate } from '../../utils/dateUtils';
+import {PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip} from 'recharts';
+import {formatDateShortUS, formatDateForInput, parseInputDate} from '../../utils/dateUtils';
 import './Charts.css';
 
 function ExpensesChart() {
@@ -22,7 +22,7 @@ function ExpensesChart() {
 
     const handleLogout = async () => {
         if (isLoggingOut) return;
-        
+
         setIsLoggingOut(true);
         try {
             localStorage.removeItem('userEmail');
@@ -72,7 +72,7 @@ function ExpensesChart() {
                     // If date range is selected, get expenses for that range
                     response = await getExpensesByDateRange(startDate, endDate);
                     // Filter only expenses from selected category
-                    response.data = response.data.filter(expense => 
+                    response.data = response.data.filter(expense =>
                         expense.categoryId === parseInt(selectedCategory)
                     );
                 } else {
@@ -86,18 +86,23 @@ function ExpensesChart() {
                     date: formatDateShortUS(expense.date)
                 }));
 
-                const chartData = formattedExpenses.map(expense => {
+                const chartData = response.data.map(expense => {
                     const amount = parseFloat(expense.amount);
                     return {
                         name: expense.description || 'No description',
                         value: amount,
-                        date: expense.date
+                        date: new Date(expense.date).toLocaleDateString('en-US', {
+                            month: '2-digit',
+                            day: '2-digit',
+                            year: 'numeric'
+                        })
                     };
                 });
 
+
                 // Calculate total amount for percentage
                 const totalAmount = chartData.reduce((sum, item) => sum + item.value, 0);
-                
+
                 // Add percentage to each item
                 chartData.forEach(item => {
                     item.percentage = ((item.value / totalAmount) * 100).toFixed(1);
@@ -117,12 +122,12 @@ function ExpensesChart() {
 
     return (
         <div className="chart-page">
-            <Navbar onLogout={handleLogout} isLoggingOut={isLoggingOut} />
+            <Navbar onLogout={handleLogout} isLoggingOut={isLoggingOut}/>
             <div className="chart-container">
                 <div className="chart-controls">
                     <div className="control-group">
                         <label htmlFor="category">Category:</label>
-                        <select 
+                        <select
                             id="category"
                             value={selectedCategory}
                             onChange={(e) => setSelectedCategory(e.target.value)}
@@ -179,7 +184,7 @@ function ExpensesChart() {
                                         cx="50%"
                                         cy="50%"
                                         labelLine={false}
-                                        label={({ name }) => name}
+                                        label={({name}) => name}
                                         outerRadius={150}
                                         innerRadius={0}
                                         paddingAngle={0}
@@ -189,27 +194,28 @@ function ExpensesChart() {
                                         dataKey="value"
                                     >
                                         {expenses.map((entry, index) => (
-                                            <Cell 
-                                                key={`cell-${index}`} 
+                                            <Cell
+                                                key={`cell-${index}`}
                                                 fill={COLORS[index % COLORS.length]}
                                             />
                                         ))}
                                     </Pie>
-                                    <Tooltip content={({ active, payload }) => {
+                                    <Tooltip content={({active, payload}) => {
                                         if (active && payload && payload.length) {
                                             const data = payload[0];
                                             return (
                                                 <div className="custom-tooltip">
                                                     <p className="tooltip-name">{data.name}</p>
                                                     <p className="tooltip-value">{formatValue(data.value)}</p>
-                                                    <p className="tooltip-percentage">{data.payload.percentage}% of category</p>
+                                                    <p className="tooltip-percentage">{data.payload.percentage}% of
+                                                        category</p>
                                                     <p className="tooltip-date">{data.payload.date}</p>
                                                 </div>
                                             );
                                         }
                                         return null;
-                                    }} />
-                                    <Legend />
+                                    }}/>
+                                    <Legend/>
                                 </PieChart>
                             </ResponsiveContainer>
                         </div>
