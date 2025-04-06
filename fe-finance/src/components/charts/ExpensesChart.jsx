@@ -3,7 +3,7 @@ import {useNavigate} from 'react-router-dom';
 import {getCategories, getExpensesByCategory, getExpensesByDateRange} from '../../api/axios';
 import Navbar from '../navigation/Navbar';
 import {PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip} from 'recharts';
-import {formatDateShortUS, formatDateForInput, parseInputDate} from '../../utils/dateUtils';
+import dateUtils from '../../utils/dateUtils';
 import './Charts.css';
 
 function ExpensesChart() {
@@ -51,12 +51,26 @@ function ExpensesChart() {
         fetchCategories();
     }, []);
 
+    useEffect(() => {
+        const dateInputs = document.querySelectorAll('input[type="datetime-local"]');
+        dateInputs.forEach(input => {
+            input.style.webkitLocale = 'en-US';
+            input.style.locale = 'en-US';
+        });
+    }, []);
+
     // Format value in tooltip
     const formatValue = (value) => {
         return new Intl.NumberFormat('en-US', {
             style: 'currency',
             currency: 'USD'
         }).format(value);
+    };
+
+    // Format date in tooltip
+    const formatTooltipDate = (dateString) => {
+        if (!dateString) return '';
+        return dateUtils.formatDateUS(dateString);
     };
 
     // Fetch expenses when category or dates change
@@ -80,22 +94,13 @@ function ExpensesChart() {
                     response = await getExpensesByCategory(selectedCategory);
                 }
 
-                // Prepare chart data - each expense separately
-                const formattedExpenses = response.data.map(expense => ({
-                    ...expense,
-                    date: formatDateShortUS(expense.date)
-                }));
-
                 const chartData = response.data.map(expense => {
                     const amount = parseFloat(expense.amount);
                     return {
                         name: expense.description || 'No description',
                         value: amount,
-                        date: new Date(expense.date).toLocaleDateString('en-US', {
-                            month: '2-digit',
-                            day: '2-digit',
-                            year: 'numeric'
-                        })
+                        date: dateUtils.formatDateShortUS(expense.date),
+                        percentage: ((amount / totalAmount) * 100).toFixed(1)
                     };
                 });
 
@@ -121,7 +126,7 @@ function ExpensesChart() {
     }, [selectedCategory, startDate, endDate]);
 
     return (
-        <div className="chart-page">
+        <div className="chart-page" lang="en-US">
             <Navbar onLogout={handleLogout} isLoggingOut={isLoggingOut}/>
             <div className="chart-container">
                 <div className="chart-controls">
@@ -143,19 +148,19 @@ function ExpensesChart() {
                     <div className="control-group">
                         <label htmlFor="startDate">From:</label>
                         <input
-                            type="date"
+                            type="datetime-local"
                             id="startDate"
-                            value={startDate ? startDate.split('T')[0] : ''}
-                            onChange={(e) => setStartDate(e.target.value ? e.target.value + 'T00:00:00' : '')}
+                            value={startDate ? dateUtils.formatDateForInput(startDate) : ''}
+                            onChange={(e) => setStartDate(dateUtils.parseInputDate(e.target.value))}
                         />
                     </div>
                     <div className="control-group">
                         <label htmlFor="endDate">To:</label>
                         <input
-                            type="date"
+                            type="datetime-local"
                             id="endDate"
-                            value={endDate ? endDate.split('T')[0] : ''}
-                            onChange={(e) => setEndDate(e.target.value ? e.target.value + 'T23:59:59' : '')}
+                            value={endDate ? dateUtils.formatDateForInput(endDate) : ''}
+                            onChange={(e) => setEndDate(dateUtils.parseInputDate(e.target.value))}
                         />
                     </div>
                 </div>
@@ -209,7 +214,7 @@ function ExpensesChart() {
                                                     <p className="tooltip-value">{formatValue(data.value)}</p>
                                                     <p className="tooltip-percentage">{data.payload.percentage}% of
                                                         category</p>
-                                                    <p className="tooltip-date">{data.payload.date}</p>
+                                                    <p className="tooltip-date">{formatTooltipDate(data.payload.date)}</p>
                                                 </div>
                                             );
                                         }

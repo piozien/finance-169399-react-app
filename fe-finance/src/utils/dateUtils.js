@@ -1,4 +1,4 @@
-export const formatDateUS = (dateString) => {
+const formatDateUS = (dateString) => {
     const date = new Date(dateString);
     return date.toLocaleDateString('en-US', {
         month: '2-digit',
@@ -11,7 +11,7 @@ export const formatDateUS = (dateString) => {
     });
 };
 
-export const formatDateShortUS = (dateString) => {
+const formatDateShortUS = (dateString) => {
     const date = new Date(dateString);
     return date.toLocaleDateString('en-US', {
         month: '2-digit',
@@ -20,14 +20,23 @@ export const formatDateShortUS = (dateString) => {
     });
 };
 
-export const formatDateForInput = (dateString) => {
+const formatDateForInput = (dateString) => {
     if (!dateString) return '';
     const date = new Date(dateString);
     return date.toISOString().slice(0, 16);
 };
 
-export const parseInputDate = (inputValue) => {
+const parseInputDate = (inputValue) => {
     if (!inputValue) return '';
     const date = new Date(inputValue);
     return date.toISOString();
 };
+
+const dateUtils = {
+    formatDateUS,
+    formatDateShortUS,
+    formatDateForInput,
+    parseInputDate
+};
+
+export default dateUtils;
