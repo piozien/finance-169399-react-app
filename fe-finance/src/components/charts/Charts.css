@@ -10,8 +10,8 @@
     padding: 20px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     margin: 20px;
-    margin-top: 80px; /* Przestrzeń na navbar */
-    margin-bottom: 80px; /* Przestrzeń na footer */
+    margin-top: 80px;
+    margin-bottom: 80px;
 }
 
 .chart-container h2 {
@@ -36,6 +36,42 @@
     border-radius: 4px;
     padding: 12px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* React DatePicker styles */
+.date-picker {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    width: 120px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.react-datepicker {
+    font-family: inherit;
+}
+
+.react-datepicker__header {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.react-datepicker__current-month {
+    color: white;
+}
+
+.react-datepicker__day-name {
+    color: white;
+}
+
+.react-datepicker__day--selected {
+    background-color: var(--primary-color);
+}
+
+.react-datepicker__day:hover {
+    background-color: var(--primary-color);
 }
 
 .custom-tooltip p {

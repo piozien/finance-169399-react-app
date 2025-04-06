@@ -3,7 +3,9 @@ import {useNavigate} from 'react-router-dom';
 import {getCategories, getExpensesByCategory, getExpensesByDateRange} from '../../api/axios';
 import Navbar from '../navigation/Navbar';
 import {PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip} from 'recharts';
+import DatePicker from 'react-datepicker';
 import dateUtils from '../../utils/dateUtils';
+import 'react-datepicker/dist/react-datepicker.css';
 import './Charts.css';
 
 function ExpensesChart() {
@@ -51,13 +53,13 @@ function ExpensesChart() {
         fetchCategories();
     }, []);
 
-    useEffect(() => {
-        const dateInputs = document.querySelectorAll('input[type="datetime-local"]');
-        dateInputs.forEach(input => {
-            input.style.webkitLocale = 'en-US';
-            input.style.locale = 'en-US';
-        });
-    }, []);
+    const handleDateChange = (date, setter) => {
+        if (!date) {
+            setter('');
+            return;
+        }
+        setter(date.toISOString());
+    };
 
     // Format value in tooltip
     const formatValue = (value) => {
@@ -147,20 +149,24 @@ function ExpensesChart() {
                     </div>
                     <div className="control-group">
                         <label htmlFor="startDate">From:</label>
-                        <input
-                            type="datetime-local"
+                        <DatePicker
+                            selected={startDate ? new Date(startDate) : null}
+                            onChange={(date) => handleDateChange(date, setStartDate)}
+                            dateFormat="MM/dd/yyyy"
+                            placeholderText="mm/dd/yyyy"
+                            className="date-picker"
                             id="startDate"
-                            value={startDate ? dateUtils.formatDateForInput(startDate) : ''}
-                            onChange={(e) => setStartDate(dateUtils.parseInputDate(e.target.value))}
                         />
                     </div>
                     <div className="control-group">
                         <label htmlFor="endDate">To:</label>
-                        <input
-                            type="datetime-local"
+                        <DatePicker
+                            selected={endDate ? new Date(endDate) : null}
+                            onChange={(date) => handleDateChange(date, setEndDate)}
+                            dateFormat="MM/dd/yyyy"
+                            placeholderText="mm/dd/yyyy"
+                            className="date-picker"
                             id="endDate"
-                            value={endDate ? dateUtils.formatDateForInput(endDate) : ''}
-                            onChange={(e) => setEndDate(dateUtils.parseInputDate(e.target.value))}
                         />
                     </div>
                 </div>
