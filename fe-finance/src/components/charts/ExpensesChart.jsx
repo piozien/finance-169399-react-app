@@ -1,8 +1,11 @@
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { getCategories, getExpensesByCategory, getExpensesByDateRange } from '../../api/axios';
+import {useState, useEffect} from 'react';
+import {useNavigate} from 'react-router-dom';
+import {getCategories, getExpensesByCategory, getExpensesByDateRange} from '../../api/axios';
 import Navbar from '../navigation/Navbar';
-import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from 'recharts';
+import {PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip} from 'recharts';
+import DatePicker from 'react-datepicker';
+import dateUtils from '../../utils/dateUtils';
+import 'react-datepicker/dist/react-datepicker.css';
 import './Charts.css';
 
 function ExpensesChart() {
@@ -21,7 +24,7 @@ function ExpensesChart() {
 
     const handleLogout = async () => {
         if (isLoggingOut) return;
-        
+
         setIsLoggingOut(true);
         try {
             localStorage.removeItem('userEmail');
@@ -50,12 +53,26 @@ function ExpensesChart() {
         fetchCategories();
     }, []);
 
+    const handleDateChange = (date, setter) => {
+        if (!date) {
+            setter('');
+            return;
+        }
+        setter(date.toISOString());
+    };
+
     // Format value in tooltip
     const formatValue = (value) => {
         return new Intl.NumberFormat('en-US', {
             style: 'currency',
             currency: 'USD'
         }).format(value);
+    };
+
+    // Format date in tooltip
+    const formatTooltipDate = (dateString) => {
+        if (!dateString) return '';
+        return dateUtils.formatDateUS(dateString);
     };
 
     // Fetch expenses when category or dates change
@@ -71,7 +88,7 @@ function ExpensesChart() {
                     // If date range is selected, get expenses for that range
                     response = await getExpensesByDateRange(startDate, endDate);
                     // Filter only expenses from selected category
-                    response.data = response.data.filter(expense => 
+                    response.data = response.data.filter(expense =>
                         expense.categoryId === parseInt(selectedCategory)
                     );
                 } else {
@@ -79,19 +96,20 @@ function ExpensesChart() {
                     response = await getExpensesByCategory(selectedCategory);
                 }
 
-                // Prepare chart data - each expense separately
                 const chartData = response.data.map(expense => {
                     const amount = parseFloat(expense.amount);
                     return {
                         name: expense.description || 'No description',
                         value: amount,
-                        date: new Date(expense.date).toLocaleDateString('pl-PL')
+                        date: dateUtils.formatDateShortUS(expense.date),
+                        percentage: ((amount / totalAmount) * 100).toFixed(1)
                     };
                 });
 
+
                 // Calculate total amount for percentage
                 const totalAmount = chartData.reduce((sum, item) => sum + item.value, 0);
-                
+
                 // Add percentage to each item
                 chartData.forEach(item => {
                     item.percentage = ((item.value / totalAmount) * 100).toFixed(1);
@@ -110,13 +128,13 @@ function ExpensesChart() {
     }, [selectedCategory, startDate, endDate]);
 
     return (
-        <div className="chart-page">
-            <Navbar onLogout={handleLogout} isLoggingOut={isLoggingOut} />
+        <div className="chart-page" lang="en-US">
+            <Navbar onLogout={handleLogout} isLoggingOut={isLoggingOut}/>
             <div className="chart-container">
                 <div className="chart-controls">
                     <div className="control-group">
                         <label htmlFor="category">Category:</label>
-                        <select 
+                        <select
                             id="category"
                             value={selectedCategory}
                             onChange={(e) => setSelectedCategory(e.target.value)}
@@ -131,20 +149,24 @@ function ExpensesChart() {
                     </div>
                     <div className="control-group">
                         <label htmlFor="startDate">From:</label>
-                        <input
-                            type="datetime-local"
+                        <DatePicker
+                            selected={startDate ? new Date(startDate) : null}
+                            onChange={(date) => handleDateChange(date, setStartDate)}
+                            dateFormat="MM/dd/yyyy"
+                            placeholderText="mm/dd/yyyy"
+                            className="date-picker"
                             id="startDate"
-                            value={startDate}
-                            onChange={(e) => setStartDate(e.target.value)}
                         />
                     </div>
                     <div className="control-group">
                         <label htmlFor="endDate">To:</label>
-                        <input
-                            type="datetime-local"
+                        <DatePicker
+                            selected={endDate ? new Date(endDate) : null}
+                            onChange={(date) => handleDateChange(date, setEndDate)}
+                            dateFormat="MM/dd/yyyy"
+                            placeholderText="mm/dd/yyyy"
+                            className="date-picker"
                             id="endDate"
-                            value={endDate}
-                            onChange={(e) => setEndDate(e.target.value)}
                         />
                     </div>
                 </div>
@@ -173,7 +195,7 @@ function ExpensesChart() {
                                         cx="50%"
                                         cy="50%"
                                         labelLine={false}
-                                        label={({ name }) => name}
+                                        label={({name}) => name}
                                         outerRadius={150}
                                         innerRadius={0}
                                         paddingAngle={0}
@@ -183,27 +205,28 @@ function ExpensesChart() {
                                         dataKey="value"
                                     >
                                         {expenses.map((entry, index) => (
-                                            <Cell 
-                                                key={`cell-${index}`} 
+                                            <Cell
+                                                key={`cell-${index}`}
                                                 fill={COLORS[index % COLORS.length]}
                                             />
                                         ))}
                                     </Pie>
-                                    <Tooltip content={({ active, payload }) => {
+                                    <Tooltip content={({active, payload}) => {
                                         if (active && payload && payload.length) {
                                             const data = payload[0];
                                             return (
                                                 <div className="custom-tooltip">
                                                     <p className="tooltip-name">{data.name}</p>
                                                     <p className="tooltip-value">{formatValue(data.value)}</p>
-                                                    <p className="tooltip-percentage">{data.payload.percentage}% of category</p>
-                                                    <p className="tooltip-date">{data.payload.date}</p>
+                                                    <p className="tooltip-percentage">{data.payload.percentage}% of
+                                                        category</p>
+                                                    <p className="tooltip-date">{formatTooltipDate(data.payload.date)}</p>
                                                 </div>
                                             );
                                         }
                                         return null;
-                                    }} />
-                                    <Legend />
+                                    }}/>
+                                    <Legend/>
                                 </PieChart>
                             </ResponsiveContainer>
                         </div>

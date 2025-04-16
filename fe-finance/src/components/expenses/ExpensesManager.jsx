@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react';
-import { getExpenses, createExpense, updateExpense, deleteExpense } from '../../api/axios';
-import { getCategories } from '../../api/axios';
-import { CATEGORY_CHANGED_EVENT } from '../categories/CategoryManager';
+import {useState, useEffect} from 'react';
+import {getExpenses, createExpense, updateExpense, deleteExpense} from '../../api/axios';
+import {getCategories} from '../../api/axios';
+import {CATEGORY_CHANGED_EVENT} from '../categories/CategoryManager';
 import './ExpensesManager.css';
 
 function ExpensesManager() {
@@ -65,7 +65,7 @@ function ExpensesManager() {
 
     useEffect(() => {
         const handleCategoryChange = async (event) => {
-            const { action, categoryId } = event.detail;
+            const {action, categoryId} = event.detail;
             console.log('Category change detected:', action, categoryId);
 
             if (action === 'delete') {
@@ -103,7 +103,7 @@ function ExpensesManager() {
 
         try {
             const response = await createExpense(newExpense);
-            setNewExpense({ amount: '', description: '', categoryId: '' });
+            setNewExpense({amount: '', description: '', categoryId: ''});
             setExpenses(prevExpenses => [...prevExpenses, response.data]);
             setSuccess('Expense added successfully');
             setError('');
@@ -146,7 +146,7 @@ function ExpensesManager() {
         }
 
         setIsLoading(true);
-        console.log('Updating expense:', { id: expenseId, data: editForm });
+        console.log('Updating expense:', {id: expenseId, data: editForm});
 
         try {
             const response = await updateExpense(expenseId, {
@@ -154,9 +154,9 @@ function ExpensesManager() {
                 description: editForm.description,
                 categoryId: parseInt(editForm.categoryId)
             });
-            
+
             console.log('Expense updated:', response.data);
-            
+
             setExpenses(prevExpenses =>
                 prevExpenses.map(exp =>
                     exp.id === expenseId ? response.data : exp
@@ -190,7 +190,7 @@ function ExpensesManager() {
             console.log('Calling deleteExpense API for ID:', expenseId);
             const response = await deleteExpense(expenseId);
             console.log('Delete API response:', response);
-            
+
             console.log('Updating local state to remove expense:', expenseId);
             setExpenses(prevExpenses => {
                 const updatedExpenses = prevExpenses.filter(exp => exp.id !== expenseId);
@@ -221,18 +221,18 @@ function ExpensesManager() {
     };
 
     const formatDate = (dateString) => {
-    const date = new Date(dateString);
+        const date = new Date(dateString);
 
-    return date.toLocaleDateString('en-US', {
-        month: '2-digit',
-        day: '2-digit',
-        year: 'numeric'
-    }) + ' ' + date.toLocaleTimeString('en-US', {
-        hour: '2-digit',
-        minute: '2-digit',
-        hour12: false
-    });
-};
+        return date.toLocaleDateString('en-US', {
+            month: '2-digit',
+            day: '2-digit',
+            year: 'numeric'
+        }) + ' ' + date.toLocaleTimeString('en-US', {
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: false
+        });
+    };
 
     const toggleExpanded = () => {
         setIsExpanded(!isExpanded);
@@ -253,13 +253,13 @@ function ExpensesManager() {
                                 type="number"
                                 step="0.01"
                                 value={newExpense.amount}
-                                onChange={(e) => setNewExpense(prev => ({ ...prev, amount: e.target.value }))}
+                                onChange={(e) => setNewExpense(prev => ({...prev, amount: e.target.value}))}
                                 placeholder="Amount"
                                 disabled={isLoading}
                             />
                             <select
                                 value={newExpense.categoryId}
-                                onChange={(e) => setNewExpense(prev => ({ ...prev, categoryId: e.target.value }))}
+                                onChange={(e) => setNewExpense(prev => ({...prev, categoryId: e.target.value}))}
                                 disabled={isLoading}
                             >
                                 <option value="">Select category</option>
@@ -274,7 +274,7 @@ function ExpensesManager() {
                             <input
                                 type="text"
                                 value={newExpense.description}
-                                onChange={(e) => setNewExpense(prev => ({ ...prev, description: e.target.value }))}
+                                onChange={(e) => setNewExpense(prev => ({...prev, description: e.target.value}))}
                                 placeholder="Description (optional)"
                                 disabled={isLoading}
                             />
@@ -291,18 +291,25 @@ function ExpensesManager() {
                         {expenses.map(expense => (
                             <div key={expense.id} className="expense-item">
                                 {editingExpense?.id === expense.id ? (
-                                    <form onSubmit={(e) => handleUpdateExpense(e, expense.id)} className="edit-expense-form">
+                                    <form onSubmit={(e) => handleUpdateExpense(e, expense.id)}
+                                          className="edit-expense-form">
                                         <div className="edit-form-group">
                                             <input
                                                 type="number"
                                                 step="0.01"
                                                 value={editForm.amount}
-                                                onChange={(e) => setEditForm(prev => ({ ...prev, amount: e.target.value }))}
+                                                onChange={(e) => setEditForm(prev => ({
+                                                    ...prev,
+                                                    amount: e.target.value
+                                                }))}
                                                 disabled={isLoading}
                                             />
                                             <select
                                                 value={editForm.categoryId}
-                                                onChange={(e) => setEditForm(prev => ({ ...prev, categoryId: e.target.value }))}
+                                                onChange={(e) => setEditForm(prev => ({
+                                                    ...prev,
+                                                    categoryId: e.target.value
+                                                }))}
                                                 disabled={isLoading}
                                             >
                                                 <option value="">Select category</option>
@@ -317,7 +324,10 @@ function ExpensesManager() {
                                             <input
                                                 type="text"
                                                 value={editForm.description}
-                                                onChange={(e) => setEditForm(prev => ({ ...prev, description: e.target.value }))}
+                                                onChange={(e) => setEditForm(prev => ({
+                                                    ...prev,
+                                                    description: e.target.value
+                                                }))}
                                                 placeholder="Description (optional)"
                                                 disabled={isLoading}
                                             />
@@ -325,7 +335,8 @@ function ExpensesManager() {
                                                 <button type="submit" disabled={isLoading} className="save-button">
                                                     {isLoading ? 'Saving...' : 'Save'}
                                                 </button>
-                                                <button type="button" onClick={handleCancelEdit} disabled={isLoading} className="cancel-button">
+                                                <button type="button" onClick={handleCancelEdit} disabled={isLoading}
+                                                        className="cancel-button">
                                                     Cancel
                                                 </button>
                                             </div>
