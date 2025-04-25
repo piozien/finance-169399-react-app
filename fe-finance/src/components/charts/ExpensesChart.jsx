@@ -101,8 +101,7 @@ function ExpensesChart() {
                     return {
                         name: expense.description || 'No description',
                         value: amount,
-                        date: dateUtils.formatDateShortUS(expense.date),
-                        percentage: ((amount / totalAmount) * 100).toFixed(1)
+                        date: dateUtils.formatDateShortUS(expense.date)
                     };
                 });
 
